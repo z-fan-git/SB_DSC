@@ -1,0 +1,34 @@
+,Write a summary statement that highlights the key processes and findings from this notebook. ,,,,,,,,,,,,
+,"This should include information such as the original number of rows in the data, whether our own resort was actually present etc. What columns, if any, have been removed? Any rows? Summarise the reasons why. Were any other issues found? What remedial actions did you take? State where you are in the project. Can you confirm what the target feature is for your desire to predict ticket price? How many rows were left in the data? Hint: this is a great opportunity to reread your notebook, check all cells have been executed in order and from a ""blank slate"" (restarting the kernel will do this), and that your workflow makes sense and follows a logical pattern. As you do this you can pull out salient information for inclusion in this summary. Thus, this section will provide an important overview of ""what"" and ""why"" without having to dive into the ""how"" or any unproductive or inconclusive steps along the way.",,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,Key processes in data wrangling notebook,,,,,,Findings from data wrangling notebook,,,,,,
+1,"import packages, i.e., pandas, matplotlib, seborn, os, library.sb_utils",,,,,,,,,,,,
+2,Load the ski resort data from the provided csv file and read the summary of the data by using .info and . head() methods.,,,,,,The data has 330 rows and 27 columns. There are two types of tickets: adult weekday ticket and adult weekend tiket. We need to decide which one to model later.,,,,,,
+3,Find the information of Big Mountain Resort in the data ,,,,,,The resort of interest is in the data.,,,,,,
+4,Count the number of missing values in the data by using .isnull method. The other method to check missing data will be used later.,,,,,,"The column fastEight has 50.3% of missing data. 
+The column NightSkiing_ac has 43.3% of missing data. 
+The column AdultWeekday has 16.4% of missing data. 
+The column AdultWeekend has 15.5% of missing data. The adultweekday and adultweekend columns are the target features. We need to handle the missing data with cautions. 
+The column daysOpenLastYear has 15.5% of missing data. 
+The column TerrainParks has 15.5% of missing data. 
+The column projectedDaysOpen has 14.2% of missing data. 
+The column Snow Making_ac has 13.9% of missing data. 
+The column averageSnowfall has 4.2% of missing data. The other columns have limited missing data (<2%). ",,,,,,
+5,"Review categorical features like state, region, name.",,,,,,"There is no duplicated resorts if we consider resort name, state, and region together.
+Most of state is the same as the region for a given resort. But there are 38 distinctive regions and 35 states. ",,,,,,
+6,Check the distribution Of Resorts By Region And State,,,,,,"New York accounting for the majority of resorts. Our target resort is in Montana, which comes in at 13th place. We found that the number of resorts differentiat dramatically from states to states. It indicates that the state information like population may impact the number of resorts and also the ticket price.",,,,,,
+7,Check the distribution Of Ticket Price By State,,,,,,"As we have weekday and weekedn tickets, we need to compare them separately.
+Aside from some relatively expensive ticket prices in California, Colorado, and Utah, most prices appear to lie in a broad band from around 25 to over 100 dollars. Some States show more variability than others. Montana and South Dakota, for example, both show fairly small variability as well as matching weekend and weekday ticket prices. Nevada and Utah, on the other hand, show the most range in prices. Some States, notably North Carolina and Virginia, have weekend prices far higher than weekday prices.
+The findings here offer multiple options for modeling the ticket price. We may a) disregard State completely; b) retain all State information; and c) retain State in the form of Montana vs not Montana, as our target resort is in Montana. Either of them worth an exploration.",,,,,,
+8,Explore numeric Features of columns,,,,,,"We already know part of data are missing. We need to explore the valuable information before dropping the row containing missing data. 
+SkiableTerrain_ac: Silverton Mountain has an incredibly large skiable terrain area (i.e., 26819 acres)! The silverton mountain information listed on wikipedia indicate its skiable terrain area is 1819 acres, which are more plausible with the data from the other resorts. The project replaced the number 26819 with the newly found 1819.
+Snow Making_ac: the snow making acres in Heavenly Mountain Resort (i.e., 3379) is different with the data found on its website (i.e., 2880). We may have a judgement call to make.
+fastEight: The majority of resorts don't have it or don't have data about it. Therefore, drop the fastEight column in its entirety",,,,,,
+9,"Derive State-wide Summary Statistics For Our Market Segment: 
+state, resorts per state, total number of TerrainParks, SkiableTerrain_ac, daysOpenLastYear, and NightSkiing_ac per state are collected and stored in a separted variable state_summary;
+Rows with no price data are dropped from ski_data",,,,,,"State_summary has 35 rows and 6 columns.
+Skin_data now has 330 rows and 27 columns.",,,,,,
+10,Population data in states are collected from wikipedia website and merged into state_summary.,,,,,,The list from wikipedia website needs to be processed so that the state names are matching with the state names in our data.,,,,,,
+11,Determine the target feature: ticket price,,,,,,"Weekend prices have the least missing values of the two, so drop the weekday prices and then keep just the rows that have weekend price.",,,,,,
+12,Save data,,,,,,ski_data is saved in 'ski_data_cleaned.csv' and state_summary is saved in 'state_summary.csv'.,,,,,,
