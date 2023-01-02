@@ -1,1 +1,1 @@
-# SB_DSC
+# Collection of Projects from SpringBoard Data Scientist Track
